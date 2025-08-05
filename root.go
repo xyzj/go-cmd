@@ -6,7 +6,7 @@ Usage：
 	package main
 
 	import (
-		"github.com/xyzj/gocmd"
+		"github.com/xyzj/go-cmd"
 	)
 
 	func main() {

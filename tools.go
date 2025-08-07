@@ -9,6 +9,23 @@ import (
 	"strings"
 )
 
+// SliceFlag 切片型参数，仅支持字符串格式
+// Useage：
+// var tags SliceFlag
+// flag.Var(&tags, "tag", "build tags")
+type SliceFlag []string
+
+// String 返回参数
+func (f *SliceFlag) String() string {
+	return strings.Join(*f, ", ")
+}
+
+// Set 设置值
+func (f *SliceFlag) Set(value string) error {
+	*f = append(*f, value)
+	return nil
+}
+
 type ProcessInfo struct {
 	Pid     int
 	Name    string

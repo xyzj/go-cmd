@@ -8,7 +8,12 @@ import (
 	"strings"
 )
 
-// var pidfile = flag.String("pid-file", "", "set the pid file path (from gocmd)")
+const (
+	NOT_PARSE_FLAG = "NOT_PARSE_FLAG"
+	PID_FILE       = "PID_FILE"
+)
+
+// var pidfile = flag.String("pid-file", "", "set the pid file path (from go-cmd)")
 
 // DefaultProgram Create a default console program, this program contains commands: `start`, `stop`, `restart`, `run`, `status`, `version`, `help`
 func DefaultProgram(info *Info) *Program {
@@ -43,7 +48,7 @@ func NewProgram(info *Info) *Program {
 	if info.Title == "" {
 		info.Title = pinfo.name
 	}
-	notparseflag, _ := strconv.ParseBool(os.Getenv(strings.ToUpper(GetExecNameWithoutExt()) + "_NOT_PARSE_FLAG"))
+	notparseflag, _ := strconv.ParseBool(os.Getenv(NOT_PARSE_FLAG))
 	// 处理参数
 	idx := 0
 	for k, v := range params {
@@ -63,7 +68,7 @@ func NewProgram(info *Info) *Program {
 		}
 	}
 	// 设置pid文件
-	pinfo.Pfile = os.Getenv("pid_file") // os.Getenv(fmt.Sprintf("%s_PID_FILE", strings.ToUpper(GetExecNameWithoutExt())))
+	pinfo.Pfile = os.Getenv(PID_FILE) // os.Getenv(fmt.Sprintf("%s_PID_FILE", strings.ToUpper(GetExecNameWithoutExt())))
 	if pinfo.Pfile == "" {
 		pinfo.Pfile = JoinPathFromHere(pinfo.name + ".pid")
 	}

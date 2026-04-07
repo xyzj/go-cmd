@@ -1,12 +1,12 @@
 package gocmd
 
 import (
-	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 // SliceFlag 切片型参数，仅支持字符串格式
@@ -33,8 +33,22 @@ type ProcessInfo struct {
 }
 
 // LinuxProcessExist only for linux
-func LinuxProcessExist(pid int) bool {
-	return IsExist(fmt.Sprintf("/proc/%d", pid))
+func LinuxProcessExist(pid int) bool { // 发送信号 0，检查进程是否存在
+	err := syscall.Kill(pid, 0)
+
+	if err == nil {
+		return true // 进程存在且你有权限
+	}
+
+	if err == syscall.EPERM {
+		return true // 进程存在，但你没权限（说明它肯定活着）
+	}
+
+	if err == syscall.ESRCH {
+		return false // 进程不存在
+	}
+
+	return false
 }
 
 // LinuxQueryProcess only for linux

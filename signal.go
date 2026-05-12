@@ -15,6 +15,7 @@ type SignalQuit struct {
 	cancel context.CancelFunc
 }
 
+// NewSignalQuit 创建一个退出信号捕捉器
 func NewSignalQuit() *SignalQuit {
 	ctx, cancel := context.WithCancel(context.Background())
 	return &SignalQuit{

@@ -1,16 +1,13 @@
 package gocmd
 
 import (
-	"flag"
 	"os"
 	"path/filepath"
-	"strconv"
 	"strings"
 )
 
 const (
-	NOT_PARSE_FLAG = "NOT_PARSE_FLAG"
-	PID_FILE       = "PID_FILE"
+	PID_FILE = "PID_FILE"
 )
 
 // var pidfile = flag.String("pid-file", "", "set the pid file path (from go-cmd)")
@@ -48,7 +45,6 @@ func NewProgram(info *Info) *Program {
 	if info.Title == "" {
 		info.Title = pinfo.name
 	}
-	notparseflag, _ := strconv.ParseBool(os.Getenv(NOT_PARSE_FLAG))
 	// 处理参数
 	idx := 0
 	for k, v := range params {
@@ -62,11 +58,6 @@ func NewProgram(info *Info) *Program {
 		idx = len(params)
 	}
 	pinfo.Args = params[idx:]
-	if !notparseflag {
-		if !flag.CommandLine.Parsed() {
-			flag.CommandLine.Parse(params[idx:])
-		}
-	}
 	// 设置pid文件
 	pinfo.Pfile = os.Getenv(PID_FILE) // os.Getenv(fmt.Sprintf("%s_PID_FILE", strings.ToUpper(GetExecNameWithoutExt())))
 	if pinfo.Pfile == "" {

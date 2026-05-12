@@ -30,9 +30,10 @@ import (
 )
 
 type Program struct {
-	info  *Info
-	pinfo *ProcInfo
-	cmds  *commandList
+	info         *Info
+	pinfo        *ProcInfo
+	cmds         *commandList
+	notParseFlag bool
 }
 
 func (p *Program) printHelp() {
@@ -68,6 +69,7 @@ Flags:`, p.info.Title, p.info.Descript, p.pinfo.name, strings.Join(s, "")))
 
 // AddCommand add a command
 func (p *Program) AddCommand(cmd *Command) *Program {
+	p.notParseFlag = true
 	p.cmds.Store(cmd.Name, cmd)
 	return p
 }
@@ -90,6 +92,11 @@ func (p *Program) AfterStop(f func()) *Program {
 
 // Execute Execute the given command, when no command is given, print help
 func (p *Program) Execute() {
+	if !p.notParseFlag {
+		if !flag.CommandLine.Parsed() && len(p.pinfo.Args) > 0 {
+			flag.CommandLine.Parse(p.pinfo.Args)
+		}
+	}
 	if len(p.pinfo.params) == 0 { // no command, print help
 		p.printHelp()
 		os.Exit(0)
@@ -117,7 +124,6 @@ func (p *Program) Execute() {
 	if p.pinfo.beforeStart == nil {
 		p.pinfo.beforeStart = func() {}
 	}
-
 	found := false
 	code := 0
 	for _, v := range p.cmds.Slice() {
@@ -157,6 +163,13 @@ func (p *Program) ExecuteDefault(cmd string) {
 	p.Execute()
 }
 
+// ExecuteNotParseFlag 不解析参数，直接传递给命令
+func (p *Program) ExecuteNotParseFlag(cmd string) {
+	p.notParseFlag = true
+	p.ExecuteDefault(cmd)
+}
+
+// Exit 退出程序，发送停止信号
 func (p *Program) Exit(code int) {
 	p.pinfo.sigc.SendSignalQuit()
 }

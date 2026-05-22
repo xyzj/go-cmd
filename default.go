@@ -20,10 +20,11 @@ func DefaultProgram(info *Info) *Program {
 // NewProgram Create a empty console program, this program contains commands: `version`, `help`
 func NewProgram(info *Info) *Program {
 	if info == nil {
-		info = &Info{}
-	}
-	if info.Ver == "" {
-		info.Ver = "0.1.19"
+		info = &Info{
+			Version:     "0.1.19",
+			Name:        "a default program",
+			Description: "this is a default program",
+		}
 	}
 	params := os.Args
 	pinfo := &ProcInfo{
@@ -42,8 +43,8 @@ func NewProgram(info *Info) *Program {
 	}
 	pinfo.name = GetExecName()
 	pinfo.dir = GetExecDir()
-	if info.Title == "" {
-		info.Title = pinfo.name
+	if info.Name == "" {
+		info.Name = pinfo.name
 	}
 	// 处理参数
 	idx := 0

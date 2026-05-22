@@ -8,12 +8,12 @@ import (
 
 // Info program information
 type Info struct {
-	// Ver program version
-	Ver string
-	// Title program title
-	Title string
-	// Descript program descript message
-	Descript string
+	// Version program version
+	Version string
+	// Name program name
+	Name string
+	// Description program description message
+	Description string
 }
 
 type ProcInfo struct {

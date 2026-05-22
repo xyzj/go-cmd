@@ -63,7 +63,7 @@ Available commands:
 %s  version	show version info and exit.
   help		print this message. Or try use 'help <command>' to see more.
 
-Flags:`, p.info.Title, p.info.Descript, p.pinfo.name, strings.Join(s, "")))
+Flags:`, p.info.Name, p.info.Description, p.pinfo.name, strings.Join(s, "")))
 	flag.PrintDefaults()
 }
 
@@ -103,7 +103,7 @@ func (p *Program) Execute() {
 	}
 	cmd := p.pinfo.params[0]
 	if cmd == "version" { // print version message
-		println(p.info.Ver)
+		println(p.info.Version)
 		os.Exit(0)
 	}
 	if cmd == "help" { // print help message

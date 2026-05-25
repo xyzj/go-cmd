@@ -92,11 +92,11 @@ func (p *Program) AfterStop(f func()) *Program {
 
 // Execute Execute the given command, when no command is given, print help
 func (p *Program) Execute() {
-	if !p.notParseFlag {
-		if !flag.CommandLine.Parsed() && len(p.pinfo.Args) > 0 {
-			flag.CommandLine.Parse(p.pinfo.Args)
-		}
+	// if !p.notParseFlag {
+	if !flag.CommandLine.Parsed() && len(p.pinfo.Args) > 0 {
+		flag.CommandLine.Parse(p.pinfo.Args)
 	}
+	// }
 	if len(p.pinfo.params) == 0 { // no command, print help
 		p.printHelp()
 		os.Exit(0)

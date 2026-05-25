@@ -26,7 +26,7 @@ func NewSignalQuit() *SignalQuit {
 }
 
 func logMessage(s string) string {
-	return fmt.Sprintf("%s %s", time.Now().Format("2006-01-02 15:04:05.000"), s)
+	return time.Now().Format("Jan02 15:04:05.000 ") + s
 }
 
 // SignalCapture 创建一个退出信号捕捉器

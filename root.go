@@ -69,7 +69,6 @@ Flags:`, p.info.Name, p.info.Description, p.pinfo.name, strings.Join(s, "")))
 
 // AddCommand add a command
 func (p *Program) AddCommand(cmd *Command) *Program {
-	p.notParseFlag = true
 	p.cmds.Store(cmd.Name, cmd)
 	return p
 }
